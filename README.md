@@ -1,66 +1,74 @@
-## Foundry
+# Deploy Smart Contract – Simple Vault (Avalanche Testnet)
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+## 1. Installazione Core Wallet (estensione browser)
+Scarica l'estensione ufficiale Core Wallet:
+ https://chromewebstore.google.com/detail/core-wallet-crypto-made-e/agoakfejjabomempkjlepdflaleeobhb
 
-Foundry consists of:
+Segui i passaggi di configurazione mostrati nelle slide o nella registrazione.
 
-- **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
-- **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
-- **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
-- **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+---
 
-## Documentation
+## 2. Crea un account su Builder Hub (Avalanche)
+Accedi al faucet e crea il tuo account:
+ https://build.avax.network/console/primary-network/faucet
 
-https://book.getfoundry.sh/
+Completa i passaggi indicati nelle slide o nel video.
 
-## Usage
+---
 
-### Build
+## 3. Setup ambiente di sviluppo (macOS / Linux / Windows)
+
+> **macOS / Linux**: usa il terminale di VS Code  
+> **Windows**: usa WSL (Ubuntu)
+
+Installa Foundry:
 
 ```shell
-$ forge build
+curl -L https://foundry.paradigm.xyz | bash
 ```
-
-### Test
-
+Riavvia il terminale (comando per macOS)
 ```shell
-$ forge test
+source ~/.zshenv
 ```
-
-### Format
-
+Installa Foundry tools:
 ```shell
-$ forge fmt
+foundryup
 ```
-
-### Gas Snapshots
-
+Verifica l’installazione:
 ```shell
-$ forge snapshot
+forge --version
+anvil --version
+cast --version
 ```
-
-### Anvil
-
+## 4. Crea il progetto
+Crea la cartella del progetto:
 ```shell
-$ anvil
+mkdir simple_vault
+cd simple_vault
 ```
-
-### Deploy
-
+La cartella deve essere vuota. Ora inizializza Foundry:
 ```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
+forge init
 ```
-
-### Cast
-
+Rimuovi la cartella dei test (non necessaria per il deploy):
 ```shell
-$ cast <subcommand>
+rm -rf test
 ```
-
-### Help
-
+## 5. Configura variabili d’ambiente
+Esporta la tua PRIVATE KEY (come mostrato nelle slide/video):
 ```shell
-$ forge --help
-$ anvil --help
-$ cast --help
+export PRIVATE_KEY="INSERISCI_QUI_LA_TUA_PRIVATE_KEY"
+```
+Esporta l’RPC per la testnet Avalanche Fuji:
+```shell
+export RPC="https://api.avax-test.network/ext/bc/C/rpc"
+```
+ Non rimuovere le virgolette!
+
+## 6. Deploy dello smart contract
+Esegui il deploy con il seguente comando:
+```shell
+forge script script/SimpleVault.s.sol:DeploySimpleVault \
+  --rpc-url $RPC \
+  --broadcast
 ```
